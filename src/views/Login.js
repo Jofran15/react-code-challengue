@@ -1,51 +1,29 @@
-import React, { Component } from 'react'
-import "../styles/Login.css"
+import React, { useState } from "react";
+import { useAuth } from "../utils/auth";
+import { useNavigate,useLocation } from "react-router-dom";
 
-export class Login extends Component {
- 
-        render(){
-            return(
-               <div className="container">
-                <div className="form-box">
-                  <div className="header-form">
-                    <h4 className="text-primary text-center"><i className="fa fa-user-circle" style={{fontSize:"110px"}}></i></h4>
-                    <div className="image">
-                    </div>
-                  </div>
-                  <div className="body-form">
-                   <form>
-                      <div className="input-group mb-3">
-           <div className="input-group-prepend">
-            <span className="input-group-text"><i className="fa fa-user"></i></span>
-          </div>
-          <input type="text" className="form-control" placeholder="Username" />
-        </div>
-         <div className="input-group mb-3">
-           <div className="input-group-prepend">
-            <span className="input-group-text"><i className="fa fa-lock"></i></span>
-          </div>
-          <input type="text" className="form-control" placeholder="Password" />
-        </div>
-         <button type="button" className="btn btn-secondary btn-block">LOGIN</button>
-         <div className="message">
-        <div><input type="checkbox" /> Remember ME</div>
-         <div><a href="#">Forgot your password</a></div>
-         </div>
-           </form>
-                    <div className="social">
-                      <a href="#"><i className="fab fa-facebook"></i></a>
-                      <a href="#"><i className="fab fa-twitter-square"></i></a>
-                      <a href="#"><i className="fab fa-google"></i></a>
-                    </div>
-                  </div>
-                </div>
-               </div>   
-            )
-          }
-        }
-        
-    
-  
+function Login() {
+  const [user, setUser] = useState("");
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation()
 
+  const redirecPath = location.state?.path || '/home'
 
-export default Login
+  const handleLogin = () => {
+    auth.login(user);
+    navigate(redirecPath,{replace:true});
+  }
+  return (
+  <div>
+    <label>
+      User name:{''}
+      <input type="text" onChange={(e)=>setUser(e.target.value)}/>
+    </label>
+    <button onClick={handleLogin}>Login</button>
+
+  </div>
+  )
+}
+
+export default Login;
